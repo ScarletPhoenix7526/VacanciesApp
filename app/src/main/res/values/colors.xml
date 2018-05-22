@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimary">#72467b</color>
+    <color name="colorPrimaryDark">#72467b</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="colorToolBar">#72467b</color>
+    <color name="colorDarkPurple">#72467b</color>
+    <color name="colorDarkOrange">#ffa500</color>
+    <color name="textDateAndTime">#878787</color>
+    <color name="textDescriptionPosition">#767676</color>
+    <color name="colorBorderCardView">#cecece</color>
 </resources>
