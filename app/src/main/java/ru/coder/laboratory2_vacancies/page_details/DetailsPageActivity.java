@@ -1,4 +1,4 @@
-package ru.coder.laboratory2_vacancies.details_page;
+package ru.coder.laboratory2_vacancies.page_details;
 
 import android.content.Intent;
 import android.net.Uri;

@@ -1,4 +1,4 @@
-package ru.coder.laboratory2_vacancies.main_page;
+package ru.coder.laboratory2_vacancies.page_main;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -11,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ import ru.coder.laboratory2_vacancies.internet.VacanciesModel;
  * Created by macos_user on 5/13/18.
  */
 
-public class ListVacanciesAdapter extends ArrayAdapter {
+public class ListVacanciesAdapter extends ArrayAdapter <VacanciesModel> {
     private boolean[] checkboxStatus;   // должен быть массив, так как много View
     private boolean flagCheckBox;
     private List<VacanciesModel> list;
@@ -31,7 +32,6 @@ public class ListVacanciesAdapter extends ArrayAdapter {
         checkboxStatus = new boolean[list.size()];
         this.list = list;
         this.flagCheckBox = flag;
-
     }
 
     @NonNull
@@ -55,7 +55,7 @@ public class ListVacanciesAdapter extends ArrayAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        final VacanciesModel model = (VacanciesModel) getItem(position);
+        final VacanciesModel model = getItem(position);
 
         if (model != null) {
             holder.tvWhenCreated.setText(model.getData());
@@ -67,15 +67,13 @@ public class ListVacanciesAdapter extends ArrayAdapter {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean flag) {
                     checkboxStatus[position] = flag;
-                    /*if (checkboxStatus[position]) {
+                    if (checkboxStatus[position]) {
                         Toast.makeText(getContext(),
-                                "Добавлено в избранное" + checkboxStatus[position] +
-                                        model.getHeader(), Toast.LENGTH_SHORT).show();
+                                "Добавлено в избранное", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(getContext(),
-                                "Удалено из избранных" + checkboxStatus[position] +
-                                        model.getHeader(), Toast.LENGTH_SHORT).show();
-                    }*/
+                                "Удалено из избранных", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
             holder.checkBox.setChecked(checkboxStatus[position]);

@@ -1,4 +1,4 @@
-package ru.coder.laboratory2_vacancies.main_page;
+package ru.coder.laboratory2_vacancies.page_main;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,7 +19,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import ru.coder.laboratory2_vacancies.R;
 import ru.coder.laboratory2_vacancies.database.SQLiteDB;
-import ru.coder.laboratory2_vacancies.details_page.DetailsPageActivity;
+import ru.coder.laboratory2_vacancies.page_details.DetailsPageActivity;
 import ru.coder.laboratory2_vacancies.internet.GetVacanciesService;
 import ru.coder.laboratory2_vacancies.internet.StartApp;
 import ru.coder.laboratory2_vacancies.internet.VacanciesModel;

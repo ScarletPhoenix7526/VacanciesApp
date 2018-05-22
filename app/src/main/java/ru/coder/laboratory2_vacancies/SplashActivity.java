@@ -5,7 +5,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import ru.coder.laboratory2_vacancies.main_page.MainPageActivity;
+import ru.coder.laboratory2_vacancies.page_main.MainPageActivity;
 
 public class SplashActivity extends AppCompatActivity {
 

@@ -21,8 +21,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".main_page.MainPageActivity" />
-        <activity android:name=".details_page.DetailsPageActivity" android:label="@string/details_page_label"/>
+        <activity android:name=".page_main.MainPageActivity" />
+        <activity android:name=".page_details.DetailsPageActivity" android:label="@string/details_page_label"/>
     </application>
 
 </manifest>
