@@ -19,4 +19,13 @@ public interface GetVacanciesService {
                                             @Field("limit") String limit,
                                             @Field("page") String page);
 
+    @FormUrlEncoded
+    @POST("mobile-api.php")
+    Call<List<VacanciesModel>> getDetectedVacancies(@Field("login") String login,
+                                                    @Field("f") String f,
+                                                    @Field("limit") String limit,
+                                                    @Field("page") String page,
+                                                    @Field("salary") String salary,
+                                                    @Field("term") String term);
+
 }

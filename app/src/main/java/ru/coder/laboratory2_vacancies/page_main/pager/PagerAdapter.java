@@ -1,4 +1,4 @@
-package ru.coder.laboratory2_vacancies.page_main;
+package ru.coder.laboratory2_vacancies.page_main.pager;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

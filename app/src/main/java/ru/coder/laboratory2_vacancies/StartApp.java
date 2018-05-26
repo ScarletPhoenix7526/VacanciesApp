@@ -1,4 +1,4 @@
-package ru.coder.laboratory2_vacancies.internet;
+package ru.coder.laboratory2_vacancies;
 
 import android.app.Application;
 import android.content.Context;
@@ -13,6 +13,7 @@ import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.coder.laboratory2_vacancies.database.SQLiteDB;
+import ru.coder.laboratory2_vacancies.internet.GetVacanciesService;
 
 /**
  * Created by macos_user on 5/14/18.

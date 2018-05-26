@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_gravity="bottom"
+    android:layout_height="wrap_content"
     android:layout_marginBottom="8dp"
     android:orientation="vertical">
 
@@ -17,6 +16,7 @@
         app:titleTextColor="@android:color/white" />
 
     <LinearLayout
+        android:id="@+id/linearPress"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:background="@color/colorDarkPurple"
@@ -31,8 +31,7 @@
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"
-            android:orientation="horizontal"
-            android:visibility="visible">
+            android:orientation="horizontal">
 
             <ImageView
                 android:layout_width="30dp"
@@ -83,21 +82,21 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:layout_height="320dp"
+        android:fillViewport="true"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             android:orientation="vertical">
 
             <android.support.v7.widget.CardView
                 android:id="@+id/cardView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:background="@color/colorBorderCardView"
                 app:cardCornerRadius="3dp"
                 app:cardUseCompatPadding="true"
@@ -173,8 +172,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="5dp"
                                 android:layout_marginStart="5dp"
-                                android:maxLength="20"
-                                android:maxLines="2"
+                                android:maxLength="15"
+                                android:maxLines="1"
                                 android:padding="5dp"
                                 android:text="10000 KGS; Договорная" />
 
@@ -262,31 +261,32 @@
 
                 </LinearLayout>
             </android.support.v7.widget.CardView>
-
-            <android.support.constraint.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp">
-
-                <Button
-                    android:id="@+id/btnCallNumber"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:background="@color/colorDarkOrange"
-                    android:clickable="true"
-                    android:drawableLeft="@drawable/ic_call_on_btn_in_details"
-                    android:drawableStart="@drawable/ic_call_on_btn_in_details"
-                    android:focusable="true"
-                    android:padding="8dp"
-                    android:text="@string/btnCall"
-                    android:textColor="@android:color/white"
-                    android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="parent" />
-            </android.support.constraint.ConstraintLayout>
         </LinearLayout>
     </ScrollView>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp">
+
+        <Button
+            android:id="@+id/btnCallNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:background="@color/colorDarkOrange"
+            android:clickable="true"
+            android:drawableLeft="@drawable/ic_call_on_btn_in_details"
+            android:drawableStart="@drawable/ic_call_on_btn_in_details"
+            android:focusable="true"
+            android:padding="8dp"
+            android:text="@string/btnCall"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+    </RelativeLayout>
 
 </LinearLayout>

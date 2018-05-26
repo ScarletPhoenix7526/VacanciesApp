@@ -1,4 +1,4 @@
-package ru.coder.laboratory2_vacancies.page_main;
+package ru.coder.laboratory2_vacancies.page_main.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,7 +18,8 @@ public class DesirableVacanciesFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_desirable_v, container, false);
         return view;
     }

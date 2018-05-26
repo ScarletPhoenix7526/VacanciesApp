@@ -8,4 +8,7 @@
     <color name="textDateAndTime">#878787</color>
     <color name="textDescriptionPosition">#767676</color>
     <color name="colorBorderCardView">#cecece</color>
+    <color name="colorBackgroundTextViewSearching">#e2e2e2</color>
+    <color name="colorTextTextViewSearching">#686868</color>
+    <color name="colorTextInBtnSearching">#74487d</color>
 </resources>
