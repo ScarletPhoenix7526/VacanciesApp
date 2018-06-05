@@ -1,9 +1,14 @@
 package ru.coder.laboratory2_vacancies.page_details;
 
+import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -12,6 +17,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,7 +29,7 @@ import java.util.Locale;
 import ru.coder.laboratory2_vacancies.R;
 import ru.coder.laboratory2_vacancies.StartApp;
 import ru.coder.laboratory2_vacancies.database.SQLiteDB;
-import ru.coder.laboratory2_vacancies.internet.VacanciesModel;
+import ru.coder.laboratory2_vacancies.network.VacanciesModel;
 
 /**
  * Created by macos_user on 5/19/18.
@@ -109,6 +115,7 @@ public class DetailsPageActivity extends AppCompatActivity implements View.OnCli
                     llPressPrevious.setClickable(true);
                     mPositionCardView++;
                     getDataFromApi();
+                    saveViewed(listWithVacancies.get(mPositionCardView));
                 }
                 break;
 
@@ -123,13 +130,33 @@ public class DetailsPageActivity extends AppCompatActivity implements View.OnCli
                     llPressNext.setVisibility(View.VISIBLE);
                     mPositionCardView--;
                     getDataFromApi();
+                    saveViewed(listWithVacancies.get(mPositionCardView));
                 }
                 break;
 
             case R.id.btnCallNumber:
                 callOnTelephone();
                 break;
+
+            case R.id.cbCheckbox:
+                if (checkBox.isChecked()) {
+                    saveFavorite(listWithVacancies.get(mPositionCardView));
+                    Toast.makeText(getApplicationContext(), "Добавлено в избранное",
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    deleteFavorite(listWithVacancies.get(mPositionCardView));
+                    Toast.makeText(getApplicationContext(), "Удалено из избранных",
+                            Toast.LENGTH_SHORT).show();
+                }
         }
+    }
+
+    private void saveFavorite(VacanciesModel model) {
+        mDataBase.saveInFavorite(model);
+    }
+
+    private void deleteFavorite(VacanciesModel model) {
+        mDataBase.deleteFavorite(model.getPid());
     }
 
     private void getDataFromApi() {
@@ -139,8 +166,13 @@ public class DetailsPageActivity extends AppCompatActivity implements View.OnCli
         tvWhenCreated.setText(transformingDate(model.getData()));
         tvSalary.setText(model.getSalary());
         tvFromSite.setText(model.getSite_address());
-        tvTelephoneNumber.setText(model.getTelephone());
         tvDetailsAboutVacancy.setText(model.getBody());
+
+        if (model.getTelephone().equals("")) {
+            tvTelephoneNumber.setText(R.string.text_no_tel_num);
+        } else {
+            tvTelephoneNumber.setText(model.getTelephone());
+        }
 
         if (model.getSalary().equals("")) {
             tvSalary.setText(R.string.text_in_tvSalary_when_nodata);
@@ -148,6 +180,13 @@ public class DetailsPageActivity extends AppCompatActivity implements View.OnCli
             tvSalary.setText(model.getSalary());
         }
         checkBox.setChecked(getCheckboxState(model));
+        saveViewed(model);
+
+
+    }
+
+    private void saveViewed(VacanciesModel model) {
+        mDataBase.saveViewedVacancy(model.getPid());
     }
 
     private boolean getCheckboxState(VacanciesModel model) {
@@ -161,31 +200,48 @@ public class DetailsPageActivity extends AppCompatActivity implements View.OnCli
         return false;
     }
 
-    private void callOnTelephone() {
-        String transferPhoneNumber = listWithVacancies
-                .get(mPositionCardView)
-                .getTelephone();
-        if (!transferPhoneNumber.equals("")) {
-            Intent intent = new Intent(Intent.ACTION_DIAL);
-            intent.setData(Uri.parse("tel: " + transferPhoneNumber.replace(".", "")));
-            startActivity(intent);
-        }
-    }
-
     private String transformingDate(String date) {
-        String givenTemplateDate = "yyyy-MM-dd HH:mm:ss";   // приходящий шаблон
-        String newTemplateDate = "HH:mm dd MMM yyyy";       // шаблон, в который нужно трансформировать приходящий шаблон
-        //Locale userLocation = Locale.forLanguageTag(String.valueOf(Locale.UNICODE_LOCALE_EXTENSION));
+        String givenTemplateDate = "yyyy-MM-dd HH:mm:ss";
+        String newTemplateDate = "HH:mm dd MMM yyyy";
         Locale userLocation = Locale.getDefault();
         SimpleDateFormat givenFormDate = new SimpleDateFormat(givenTemplateDate, userLocation);
         SimpleDateFormat transformedDate = new SimpleDateFormat(newTemplateDate, userLocation);
-        String newDateForm = null;      // если тип String, то null; если Int, то 0;
+        String newDateForm = null;
         try {
-            Date javaDate = givenFormDate.parse(date); // javadate - объект класса Date языка Java.
+            Date javaDate = givenFormDate.parse(date);
             newDateForm = transformedDate.format(javaDate);
         } catch (ParseException e) {
             e.printStackTrace();
         }
         return newDateForm;
+    }
+
+    private void callOnTelephone() {
+        String onPhoneCall = listWithVacancies.get(mPositionCardView).getTelephone();
+        if (onPhoneCall.contains(";")) {
+            onPhoneCall.replace(".", "");
+            final String[] callList = onPhoneCall.split(";");
+            AlertDialog.Builder buildDialog = new AlertDialog.Builder(this);
+            buildDialog.setItems(callList, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent intentCall = new Intent(Intent.ACTION_CALL);
+                    intentCall.setData(Uri.parse("tel: " + callList[which]));
+                    if (ActivityCompat.checkSelfPermission(getApplicationContext(),
+                            Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                        return;
+                    }
+                    startActivity(intentCall);
+                }
+            });
+
+            AlertDialog dialog = buildDialog.create();
+            dialog.show();
+
+        } else {
+            Intent intentCall = new Intent(Intent.ACTION_CALL);
+            intentCall.setData(Uri.parse("tel: " + onPhoneCall.replace(".", "")));
+            startActivity(intentCall);
+        }
     }
 }

@@ -19,5 +19,3 @@
             android:divider="@null" />
     </com.omadahealth.github.swipyrefreshlayout.library.SwipyRefreshLayout>
 </LinearLayout>
-
-    <!-- divider = @null убирает линии между CardView -->

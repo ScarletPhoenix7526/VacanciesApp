@@ -2,6 +2,7 @@ package ru.coder.laboratory2_vacancies;
 
 import android.app.Application;
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -13,7 +14,7 @@ import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.coder.laboratory2_vacancies.database.SQLiteDB;
-import ru.coder.laboratory2_vacancies.internet.GetVacanciesService;
+import ru.coder.laboratory2_vacancies.network.GetVacanciesService;
 
 /**
  * Created by macos_user on 5/14/18.
@@ -48,7 +49,7 @@ public class StartApp extends Application {
                 .writeTimeout(30, TimeUnit.SECONDS)
                 .addInterceptor(new Interceptor() {
                     @Override
-                    public Response intercept(Chain chain) throws IOException {
+                    public Response intercept(@NonNull Chain chain) throws IOException {
                         Request.Builder builder = chain.request()
                                 .newBuilder()
                                 .addHeader("Accept", "application/json;version=1");

@@ -13,11 +13,11 @@ import android.widget.ListView;
 import java.io.Serializable;
 import java.util.List;
 
-import ru.coder.laboratory2_vacancies.ListVacanciesAdapter;
+import ru.coder.laboratory2_vacancies.page_main.ListVacanciesAdapter;
 import ru.coder.laboratory2_vacancies.R;
 import ru.coder.laboratory2_vacancies.StartApp;
 import ru.coder.laboratory2_vacancies.database.SQLiteDB;
-import ru.coder.laboratory2_vacancies.internet.VacanciesModel;
+import ru.coder.laboratory2_vacancies.network.VacanciesModel;
 import ru.coder.laboratory2_vacancies.page_details.DetailsPageActivity;
 
 /**
@@ -42,7 +42,6 @@ public class FavoriteActivity extends AppCompatActivity implements AdapterView.O
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        // расположение строк имеет значение!
         mDataBase = StartApp.get(getApplicationContext()).loadSQLiteDB();
         ListView listView = findViewById(R.id.listVacancies);
         listWithVacancies = mDataBase.loadFavoriteFromDB();
@@ -51,14 +50,7 @@ public class FavoriteActivity extends AppCompatActivity implements AdapterView.O
         }
         adapter = new ListVacanciesAdapter(getApplicationContext(), listWithVacancies, false);
         listView.setAdapter(adapter);
-        //adapter.notifyDataSetChanged();
         listView.setOnItemClickListener(this);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        adapter.notifyDataSetChanged();
     }
 
     @Override

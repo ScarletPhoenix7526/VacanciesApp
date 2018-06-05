@@ -11,5 +11,4 @@
         android:text="@string/text_function_is_not_available"
         android:gravity="center"
         android:textSize="14sp"/>
-
 </RelativeLayout>

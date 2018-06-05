@@ -10,7 +10,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.coder.laboratory2_vacancies.internet.VacanciesModel;
+import ru.coder.laboratory2_vacancies.network.VacanciesModel;
 
 /**
  * Created by macos_user on 5/22/18.
@@ -43,6 +43,7 @@ public class SQLiteDB extends SQLiteOpenHelper {
             profile + " TEXT, " +
             salary + " TEXT, " +
             telephone + " TEXT, " +
+            id_for_viewed + " INTEGER, " +
             data + " TEXT, " +
             profession + " TEXT, " +
             site_address + " TEXT, " +
@@ -54,6 +55,7 @@ public class SQLiteDB extends SQLiteOpenHelper {
             header + " TEXT, " +
             profile + " TEXT, " +
             salary + " TEXT, " +
+            id_for_viewed + " INTEGER, " +
             telephone + " TEXT, " +
             data + " TEXT, " +
             profession + " TEXT, " +
@@ -225,10 +227,12 @@ public class SQLiteDB extends SQLiteOpenHelper {
     public void saveViewedVacancy(String viewedKey) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        //cv.put(ID, viewedKey);
         cv.put(id_for_viewed, viewedKey);
-        db.update(VIEWED_VACANCIES_TABLE, cv,
+        int a = db.update(VIEWED_VACANCIES_TABLE, cv,
                 id_for_viewed + " = ?", new String[] {viewedKey});
+        if (a <= 0) {
+            db.insert(VIEWED_VACANCIES_TABLE, null, cv);
+        }
         db.close();
     }
 

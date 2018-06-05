@@ -1,4 +1,4 @@
-package ru.coder.laboratory2_vacancies.internet;
+package ru.coder.laboratory2_vacancies.network;
 
 import java.util.List;
 

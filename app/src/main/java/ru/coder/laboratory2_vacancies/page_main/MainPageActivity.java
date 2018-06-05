@@ -22,7 +22,6 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import java.util.ArrayList;
 
 import ru.coder.laboratory2_vacancies.R;
-import ru.coder.laboratory2_vacancies.database.SQLiteDB;
 import ru.coder.laboratory2_vacancies.page_about_us.AboutUsActivity;
 import ru.coder.laboratory2_vacancies.page_favorite.FavoriteActivity;
 import ru.coder.laboratory2_vacancies.page_main.fragments.DayVacanciesFragment;
@@ -38,7 +37,6 @@ public class MainPageActivity extends AppCompatActivity {
     private Drawer mDrawer;
     private AccountHeader mHeader;
     private Toolbar mToolbar;
-    private SQLiteDB mDataBase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +53,7 @@ public class MainPageActivity extends AppCompatActivity {
 
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         tabLayout.setupWithViewPager(pager);
+
     }
 
     @Override

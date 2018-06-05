@@ -21,12 +21,12 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import ru.coder.laboratory2_vacancies.ListVacanciesAdapter;
+import ru.coder.laboratory2_vacancies.page_main.ListVacanciesAdapter;
 import ru.coder.laboratory2_vacancies.R;
 import ru.coder.laboratory2_vacancies.StartApp;
 import ru.coder.laboratory2_vacancies.database.SQLiteDB;
-import ru.coder.laboratory2_vacancies.internet.GetVacanciesService;
-import ru.coder.laboratory2_vacancies.internet.VacanciesModel;
+import ru.coder.laboratory2_vacancies.network.GetVacanciesService;
+import ru.coder.laboratory2_vacancies.network.VacanciesModel;
 import ru.coder.laboratory2_vacancies.page_details.DetailsPageActivity;
 
 /**
@@ -42,8 +42,6 @@ public class DayVacanciesFragment extends Fragment {
     private SQLiteDB mDateBase;
     private SwipyRefreshLayout mAddingToList;
     private int addNewVacancies = 1;
-
-    // private boolean internetOK = isOnline(getContext());
 
     @Nullable
     @Override
@@ -74,6 +72,12 @@ public class DayVacanciesFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if (adapter != null) adapter.notifyDataSetChanged();
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getData();
@@ -89,7 +93,8 @@ public class DayVacanciesFragment extends Fragment {
                                            @NonNull Response<List<VacanciesModel>> response) {
                         listWithVacancies = response.body();
                         if (getContext() != null) {
-                            adapter = new ListVacanciesAdapter(getContext(), listWithVacancies, true);
+                            adapter = new ListVacanciesAdapter(getContext(),
+                                    listWithVacancies, true);
                             vacanciesListView.setAdapter(adapter);
                         }
                         mDateBase.deleteVacanciesFromDB();
@@ -102,7 +107,10 @@ public class DayVacanciesFragment extends Fragment {
                         Toast.makeText(getContext(), "Нет подключения к интернету",
                                 Toast.LENGTH_SHORT).show();
                         List<VacanciesModel> listWithVacancies = mDateBase.loadVacanciesFromDB();
-                        adapter = new ListVacanciesAdapter(getContext(), listWithVacancies, true);
+                        if (getContext() != null) {
+                            adapter = new ListVacanciesAdapter(getContext(),
+                                    listWithVacancies, true);
+                        }
                         vacanciesListView.setAdapter(adapter);
                     }
                 });
@@ -118,7 +126,10 @@ public class DayVacanciesFragment extends Fragment {
                                            @NonNull Response<List<VacanciesModel>> response) {
                         if (response.isSuccessful() && response.body() != null) {
                             listWithVacancies.addAll(response.body());
-                            adapter = new ListVacanciesAdapter(getContext(), listWithVacancies, true);
+                            if (getContext() != null) {
+                                adapter = new ListVacanciesAdapter(getContext(),
+                                        listWithVacancies, true);
+                            }
                             vacanciesListView.setAdapter(adapter);
                             mAddingToList.setRefreshing(false);
                         } else {
@@ -127,7 +138,8 @@ public class DayVacanciesFragment extends Fragment {
                     }
 
                     @Override
-                    public void onFailure(Call<List<VacanciesModel>> call, Throwable t) {
+                    public void onFailure(@NonNull Call<List<VacanciesModel>> call,
+                                          @NonNull Throwable t) {
                         mAddingToList.setRefreshing(false);
                     }
                 });

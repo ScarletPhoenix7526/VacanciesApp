@@ -1,4 +1,4 @@
-package ru.coder.laboratory2_vacancies;
+package ru.coder.laboratory2_vacancies.page_main;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -20,16 +20,18 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import ru.coder.laboratory2_vacancies.R;
+import ru.coder.laboratory2_vacancies.StartApp;
 import ru.coder.laboratory2_vacancies.database.SQLiteDB;
-import ru.coder.laboratory2_vacancies.internet.VacanciesModel;
+import ru.coder.laboratory2_vacancies.network.VacanciesModel;
 
 /**
  * Created by macos_user on 5/13/18.
  */
 
 public class ListVacanciesAdapter extends ArrayAdapter<VacanciesModel> {
-    private boolean[] checkboxStatus;   // должен быть массив, так как много View
-    private boolean flagCheckBox;
+    private boolean[] checkboxStatus;
+    private boolean flagViewed;
     private List<VacanciesModel> list;
     private SQLiteDB mDataBase = StartApp.get(getContext()).loadSQLiteDB();
 
@@ -37,7 +39,7 @@ public class ListVacanciesAdapter extends ArrayAdapter<VacanciesModel> {
         super(context, 0, list);
         checkboxStatus = new boolean[list.size()];
         this.list = list;
-        this.flagCheckBox = flag;
+        this.flagViewed = flag;
     }
 
     @NonNull
@@ -64,6 +66,7 @@ public class ListVacanciesAdapter extends ArrayAdapter<VacanciesModel> {
         final VacanciesModel model = getItem(position);
 
         if (model != null) {
+
             holder.tvWhenCreated.setText(transformingDate(model.getData()));
 
             if (!model.getProfession().equals("Не определено")) {
@@ -76,8 +79,14 @@ public class ListVacanciesAdapter extends ArrayAdapter<VacanciesModel> {
                 holder.tvSalary.setText(model.getSalary());
             }
 
+            if (flagViewed) {
+                if (viewedVacancy(model.getPid())) {
+                    holder.llViewed.setVisibility(View.VISIBLE);
+                }
+            }
+
             holder.tvPositionDescription.setText(model.getHeader());
-            // сохраняем состояние checkbox
+
             holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean flag) {
@@ -85,8 +94,6 @@ public class ListVacanciesAdapter extends ArrayAdapter<VacanciesModel> {
                 }
             });
 
-
-            // выводим сообщение о добавлении в избранное, сохраняем и добавляем в избранное
             holder.checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -98,7 +105,7 @@ public class ListVacanciesAdapter extends ArrayAdapter<VacanciesModel> {
                         mDataBase.deleteFavorite(model.getPid());
                         Toast.makeText(getContext(),
                                 "Удалено из избранных", Toast.LENGTH_SHORT).show();
-                    } // нужен notifyDataSetChanged - обновление списка после добавления чекбоксом
+                    }
                 }
             });
 
@@ -114,10 +121,9 @@ public class ListVacanciesAdapter extends ArrayAdapter<VacanciesModel> {
                     }
                 }
             }
-
-            holder.checkBox.setChecked(checkboxStatus[position]);
-
         }
+        holder.checkBox.setChecked(checkboxStatus[position]);
+
         return convertView;
     }
 
@@ -127,16 +133,25 @@ public class ListVacanciesAdapter extends ArrayAdapter<VacanciesModel> {
         LinearLayout llViewed;
     }
 
+    private boolean viewedVacancy(String key) {
+        ArrayList<String> saveViewed = mDataBase.loadViewed();
+        for (int i = 0; i < saveViewed.size(); i++) {
+            if (key.equals(saveViewed.get(i))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private String transformingDate(String date) {
-        String givenTemplateDate = "yyyy-MM-dd HH:mm:ss";   // приходящий шаблон
-        String newTemplateDate = "HH:mm dd MMM yyyy";       // шаблон, в который нужно трансформировать приходящий шаблон
-        //Locale userLocation = Locale.forLanguageTag(String.valueOf(Locale.UNICODE_LOCALE_EXTENSION));
+        String givenTemplateDate = "yyyy-MM-dd HH:mm:ss";
+        String newTemplateDate = "HH:mm dd MMM yyyy";
         Locale userLocation = Locale.getDefault();
         SimpleDateFormat givenFormDate = new SimpleDateFormat(givenTemplateDate, userLocation);
         SimpleDateFormat transformedDate = new SimpleDateFormat(newTemplateDate, userLocation);
-        String newDateForm = null;      // если тип String, то null; если Int, то 0;
+        String newDateForm = null;
         try {
-            Date javaDate = givenFormDate.parse(date); // javadate - объект класса Date языка Java.
+            Date javaDate = givenFormDate.parse(date);
             newDateForm = transformedDate.format(javaDate);
         } catch (ParseException e) {
             e.printStackTrace();

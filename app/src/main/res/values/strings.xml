@@ -13,7 +13,10 @@
     <string name="details_page_label">Вакансии</string>
     <string name="text_in_tvSalary_when_nodata">Договорная</string>
     <string name="about_us">О нас</string>
-    <string name="text_about_us">Сервис AU.kg предоставляет вакансии со всего Интернета Кыргызстана, каждый 1-час сервис собирает последние вакансии через поисковые ресурсы google и yandex, на данное время в базе хранится 8000+активных вакансии, с вашей поддержкой мы готовы наращивать потенциал сервиса!</string>
+    <string name="text_about_us">Сервис AU.kg предоставляет вакансии со всего Интернета Кыргызстана,
+        \n каждый 1-час сервис собирает последние вакансии через поисковые ресурсы google и yandex,
+        \n на данное время в базе хранится 8000+активных вакансии, с вашей поддержкой мы готовы
+        \n наращивать потенциал сервиса!</string>
     <string name="e_mail_auuu_kg_gmail_com">E-mail: auuu.kg@gmail.com</string>
     <string name="text_favorite_on_toolbar">Избранные вакансии</string>
     <string name="text_function_is_not_available">Функция недоступна!</string>
@@ -31,4 +34,5 @@
     <string name="button_searching_reset">СБРОС</string>
     <string name="button_searching_done">ГОТОВО</string>
     <string name="btn_search_on_toolbar">Поиск</string>
+    <string name="text_no_tel_num">Не указан</string>
 </resources>

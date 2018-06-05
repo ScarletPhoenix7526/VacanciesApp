@@ -1,10 +1,11 @@
-package ru.coder.laboratory2_vacancies;
+package ru.coder.laboratory2_vacancies.page_splash_screen;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 
+import ru.coder.laboratory2_vacancies.R;
 import ru.coder.laboratory2_vacancies.page_main.MainPageActivity;
 
 public class SplashActivity extends AppCompatActivity {
