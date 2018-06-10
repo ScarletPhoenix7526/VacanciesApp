@@ -21,13 +21,13 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import ru.coder.laboratory2_vacancies.page_main.ListVacanciesAdapter;
 import ru.coder.laboratory2_vacancies.R;
 import ru.coder.laboratory2_vacancies.StartApp;
 import ru.coder.laboratory2_vacancies.database.SQLiteDB;
 import ru.coder.laboratory2_vacancies.network.GetVacanciesService;
-import ru.coder.laboratory2_vacancies.network.VacanciesModel;
+import ru.coder.laboratory2_vacancies.network.VacancyModel;
 import ru.coder.laboratory2_vacancies.page_details.DetailsPageActivity;
+import ru.coder.laboratory2_vacancies.page_main.ListVacanciesAdapter;
 
 /**
  * Created by macos_user on 5/10/18.
@@ -37,11 +37,12 @@ public class DayVacanciesFragment extends Fragment {
 
     private GetVacanciesService service;
     private ListView vacanciesListView;
-    private List<VacanciesModel> listWithVacancies;
+    private List<VacancyModel> listWithVacancies;
     private ListVacanciesAdapter adapter;
     private SQLiteDB mDateBase;
     private SwipyRefreshLayout mAddingToList;
     private int addNewVacancies = 1;
+    private String term = "", salary = "";
 
     @Nullable
     @Override
@@ -86,11 +87,11 @@ public class DayVacanciesFragment extends Fragment {
 
     private void getData() {
         service = StartApp.get(getContext()).getService();
-        service.getVacancies("au", "get_all_vacancies", "20", "1")
-                .enqueue(new Callback<List<VacanciesModel>>() {
+        service.getVacancies()
+                .enqueue(new Callback<List<VacancyModel>>() {
                     @Override
-                    public void onResponse(@NonNull Call<List<VacanciesModel>> call,
-                                           @NonNull Response<List<VacanciesModel>> response) {
+                    public void onResponse(@NonNull Call<List<VacancyModel>> call,
+                                           @NonNull Response<List<VacancyModel>> response) {
                         listWithVacancies = response.body();
                         if (getContext() != null) {
                             adapter = new ListVacanciesAdapter(getContext(),
@@ -102,11 +103,11 @@ public class DayVacanciesFragment extends Fragment {
                     }
 
                     @Override
-                    public void onFailure(@NonNull Call<List<VacanciesModel>> call,
+                    public void onFailure(@NonNull Call<List<VacancyModel>> call,
                                           @NonNull Throwable t) {
                         Toast.makeText(getContext(), "Нет подключения к интернету",
                                 Toast.LENGTH_SHORT).show();
-                        List<VacanciesModel> listWithVacancies = mDateBase.loadVacanciesFromDB();
+                        List<VacancyModel> listWithVacancies = mDateBase.loadVacanciesFromDB();
                         if (getContext() != null) {
                             adapter = new ListVacanciesAdapter(getContext(),
                                     listWithVacancies, true);
@@ -118,12 +119,11 @@ public class DayVacanciesFragment extends Fragment {
 
     private void getNewData() {
         service = StartApp.get(getContext()).getService();
-        service.getDetectedVacancies("au", "get_post_by_filter", "20",
-                String.valueOf(addNewVacancies), "", "")
-                .enqueue(new Callback<List<VacanciesModel>>() {
+        service.getDetectedVacancies()
+                .enqueue(new Callback<List<VacancyModel>>() {
                     @Override
-                    public void onResponse(@NonNull Call<List<VacanciesModel>> call,
-                                           @NonNull Response<List<VacanciesModel>> response) {
+                    public void onResponse(@NonNull Call<List<VacancyModel>> call,
+                                           @NonNull Response<List<VacancyModel>> response) {
                         if (response.isSuccessful() && response.body() != null) {
                             listWithVacancies.addAll(response.body());
                             if (getContext() != null) {
@@ -138,7 +138,7 @@ public class DayVacanciesFragment extends Fragment {
                     }
 
                     @Override
-                    public void onFailure(@NonNull Call<List<VacanciesModel>> call,
+                    public void onFailure(@NonNull Call<List<VacancyModel>> call,
                                           @NonNull Throwable t) {
                         mAddingToList.setRefreshing(false);
                     }

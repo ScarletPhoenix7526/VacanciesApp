@@ -17,7 +17,7 @@ import ru.coder.laboratory2_vacancies.page_main.ListVacanciesAdapter;
 import ru.coder.laboratory2_vacancies.R;
 import ru.coder.laboratory2_vacancies.StartApp;
 import ru.coder.laboratory2_vacancies.database.SQLiteDB;
-import ru.coder.laboratory2_vacancies.network.VacanciesModel;
+import ru.coder.laboratory2_vacancies.network.VacancyModel;
 import ru.coder.laboratory2_vacancies.page_details.DetailsPageActivity;
 
 /**
@@ -27,7 +27,7 @@ import ru.coder.laboratory2_vacancies.page_details.DetailsPageActivity;
 public class FavoriteActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     private SQLiteDB mDataBase;
-    private List<VacanciesModel> listWithVacancies;
+    private List<VacancyModel> listWithVacancies;
     private ListVacanciesAdapter adapter;
 
     @Override

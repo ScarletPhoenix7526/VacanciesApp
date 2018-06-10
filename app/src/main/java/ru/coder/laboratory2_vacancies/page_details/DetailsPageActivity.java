@@ -29,7 +29,7 @@ import java.util.Locale;
 import ru.coder.laboratory2_vacancies.R;
 import ru.coder.laboratory2_vacancies.StartApp;
 import ru.coder.laboratory2_vacancies.database.SQLiteDB;
-import ru.coder.laboratory2_vacancies.network.VacanciesModel;
+import ru.coder.laboratory2_vacancies.network.VacancyModel;
 
 /**
  * Created by macos_user on 5/19/18.
@@ -43,10 +43,10 @@ public class DetailsPageActivity extends AppCompatActivity implements View.OnCli
             tvFromSite, tvTelephoneNumber, tvDetailsAboutVacancy;
     private Button btnCallNumber;
     private CheckBox checkBox;
-    private List<VacanciesModel> listWithVacancies;
+    private List<VacancyModel> listWithVacancies;
     private int mPositionCardView;
     private SQLiteDB mDataBase;
-    private VacanciesModel model;
+    private VacancyModel model;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,7 +62,7 @@ public class DetailsPageActivity extends AppCompatActivity implements View.OnCli
 
         Intent intent = getIntent();
         listWithVacancies =
-                (List<VacanciesModel>) intent.getSerializableExtra("listWithVacancies");
+                (List<VacancyModel>) intent.getSerializableExtra("listWithVacancies");
 
         mPositionCardView = intent.getIntExtra("position", 0);
         tvTopic = findViewById(R.id.tvTopic);
@@ -151,11 +151,11 @@ public class DetailsPageActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
-    private void saveFavorite(VacanciesModel model) {
+    private void saveFavorite(VacancyModel model) {
         mDataBase.saveInFavorite(model);
     }
 
-    private void deleteFavorite(VacanciesModel model) {
+    private void deleteFavorite(VacancyModel model) {
         mDataBase.deleteFavorite(model.getPid());
     }
 
@@ -185,13 +185,13 @@ public class DetailsPageActivity extends AppCompatActivity implements View.OnCli
 
     }
 
-    private void saveViewed(VacanciesModel model) {
+    private void saveViewed(VacancyModel model) {
         mDataBase.saveViewedVacancy(model.getPid());
     }
 
-    private boolean getCheckboxState(VacanciesModel model) {
-        ArrayList<VacanciesModel> arrayList =
-                (ArrayList<VacanciesModel>) mDataBase.loadFavoriteFromDB();
+    private boolean getCheckboxState(VacancyModel model) {
+        ArrayList<VacancyModel> arrayList =
+                (ArrayList<VacancyModel>) mDataBase.loadFavoriteFromDB();
         for (int i = 0; i < arrayList.size(); i++) {
             if (model.getPid().equals(arrayList.get(i).getPid())) {
                 return true;
@@ -229,9 +229,10 @@ public class DetailsPageActivity extends AppCompatActivity implements View.OnCli
                     intentCall.setData(Uri.parse("tel: " + callList[which]));
                     if (ActivityCompat.checkSelfPermission(getApplicationContext(),
                             Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                        return;
+                        startActivity(intentCall);
+                    } else {
+                        // todo request permission
                     }
-                    startActivity(intentCall);
                 }
             });
 

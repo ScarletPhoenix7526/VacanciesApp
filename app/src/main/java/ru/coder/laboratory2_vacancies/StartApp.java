@@ -22,7 +22,7 @@ import ru.coder.laboratory2_vacancies.network.GetVacanciesService;
 
 public class StartApp extends Application {
     private GetVacanciesService service;
-    private final static String BASE_URL = "https://au.kg/";
+    private final static String BASE_URL = "";
     private SQLiteDB sqLiteDB;
 
 

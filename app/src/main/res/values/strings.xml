@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">AU.kg</string>
+    <string name="app_name">VacanciesApp</string>
     <string name="textViewed">Просмотрено</string>
-    <string name="text_header_title">Все вакансии Кыргызстана</string>
-    <string name="text_header_version">Версия: 1.6.3</string>
+    <string name="text_header_title">Все вакансии КР</string>
+    <string name="text_header_version">Версия: 1.0</string>
     <string name="text_drawer_searching">Поиск</string>
     <string name="text_marked_vacancies">Избранные вакансии</string>
     <string name="text_about">О нас</string>
@@ -13,11 +13,8 @@
     <string name="details_page_label">Вакансии</string>
     <string name="text_in_tvSalary_when_nodata">Договорная</string>
     <string name="about_us">О нас</string>
-    <string name="text_about_us">Сервис AU.kg предоставляет вакансии со всего Интернета Кыргызстана,
-        \n каждый 1-час сервис собирает последние вакансии через поисковые ресурсы google и yandex,
-        \n на данное время в базе хранится 8000+активных вакансии, с вашей поддержкой мы готовы
-        \n наращивать потенциал сервиса!</string>
-    <string name="e_mail_auuu_kg_gmail_com">E-mail: auuu.kg@gmail.com</string>
+    <string name="text_about_us">О нас</string>
+    <string name="e_mail_auuu_kg_gmail_com">Наш E-mail</string>
     <string name="text_favorite_on_toolbar">Избранные вакансии</string>
     <string name="text_function_is_not_available">Функция недоступна!</string>
     <string name="text_on_searching_mode_of_working">Режим работы</string>

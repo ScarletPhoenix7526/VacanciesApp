@@ -42,15 +42,13 @@
                         android:id="@+id/rbModeAny"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/text_radiobtn_any"
-                        android:checked="false"/>
+                        android:text="@string/text_radiobtn_any" />
 
                     <RadioButton
                         android:id="@+id/rbModeDistant"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/text_radiobtn_distantible"
-                        android:checked="false"/>
+                        android:text="@string/text_radiobtn_distantible" />
                 </TableRow>
 
                 <TableRow>
@@ -60,15 +58,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/text_radiobtn_fullday"
-                        android:layout_marginRight="10dp"
-                        android:checked="false"/>
+                        android:layout_marginRight="10dp" />
 
                     <RadioButton
                         android:id="@+id/rbModeNighty"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/text_radiobtn_nighty"
-                        android:checked="false"/>
+                        android:text="@string/text_radiobtn_nighty" />
                 </TableRow>
 
                 <TableRow>
@@ -77,8 +73,7 @@
                         android:id="@+id/rbModeFlexible"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/text_radiobtn_flexible"
-                        android:checked="false"/>
+                        android:text="@string/text_radiobtn_flexible" />
                 </TableRow>
             </TableLayout>
         </RadioGroup>

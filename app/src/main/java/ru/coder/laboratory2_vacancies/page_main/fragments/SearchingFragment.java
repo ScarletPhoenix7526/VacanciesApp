@@ -1,7 +1,6 @@
 package ru.coder.laboratory2_vacancies.page_main.fragments;
 
 import android.app.DialogFragment;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,7 +13,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import ru.coder.laboratory2_vacancies.R;
-import ru.coder.laboratory2_vacancies.page_searching.SearchingActivity;
+import ru.coder.laboratory2_vacancies.network.GetVacanciesService;
 
 /**
  * Created by macos_user on 5/24/18.
@@ -24,14 +23,16 @@ public class SearchingFragment extends DialogFragment implements View.OnClickLis
 
     private RadioGroup radioModeGroup, radioSalaryGroup;
     private RadioButton btnsMode, btnsSalary, rbModeAny, rbSalaryAny;
-    private boolean bMode = true, bSalary = true;
+    private int modePosition, salaryPosition;
+    private String[] modeString = {"Любой", "Полный день", "Гибкий", "Удаленно", "Ночной"};
+    private int[] salaryInt = {0, 5000, 10000, 30000};
+    private GetVacanciesService service;
     private Button btnReset, btnDone;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Nullable
@@ -41,13 +42,6 @@ public class SearchingFragment extends DialogFragment implements View.OnClickLis
         View view = inflater.inflate(R.layout.fragment_searching, container, false);
 
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
 
         radioModeGroup = view.findViewById(R.id.radioModeGroup);
         radioSalaryGroup = view.findViewById(R.id.radioSalaryGroup);
@@ -63,6 +57,13 @@ public class SearchingFragment extends DialogFragment implements View.OnClickLis
 
         btnReset.setOnClickListener(this);
         btnDone.setOnClickListener(this);
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
     }
 
     @Override
@@ -71,32 +72,36 @@ public class SearchingFragment extends DialogFragment implements View.OnClickLis
             case R.id.btnReset:
                 radioModeGroup.clearCheck();
                 radioSalaryGroup.clearCheck();
+                rbModeAny.setChecked(true);
+                rbSalaryAny.setChecked(true);
                 break;
 
             case R.id.btnDone:
-                    Intent intent = new Intent(getContext(), SearchingActivity.class);
-                    startActivity(intent);
-                    break;
-                }
-        }
 
-        RadioGroup.OnCheckedChangeListener groupMode = new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                break;
+        }
+    }
+
+    RadioGroup.OnCheckedChangeListener groupMode = new RadioGroup.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(RadioGroup group, int checkedId) {
+            if (group.getCheckedRadioButtonId() != -1) {
                 radioModeGroup.clearCheck();
                 btnsMode = group.findViewById(checkedId);
-
-
+                modePosition = group.getCheckedRadioButtonId();
             }
-        };
 
-        RadioGroup.OnCheckedChangeListener groupSalary = new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
+        }
+    };
+
+    RadioGroup.OnCheckedChangeListener groupSalary = new RadioGroup.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(RadioGroup group, int checkedId) {
+            if (group.getCheckedRadioButtonId() != -1) {
                 radioSalaryGroup.clearCheck();
                 btnsSalary = group.findViewById(checkedId);
-
-
+                salaryPosition = group.getCheckedRadioButtonId();
             }
-        };
-    }
+        }
+    };
+}

@@ -9,7 +9,7 @@ import java.io.Serializable;
  * Created by macos_user on 5/13/18.
  */
 
-public class VacanciesModel implements Serializable {
+public class VacancyModel implements Serializable {
 
     @SerializedName("id")
     @Expose

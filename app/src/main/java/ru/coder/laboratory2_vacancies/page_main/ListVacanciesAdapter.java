@@ -23,19 +23,19 @@ import java.util.Locale;
 import ru.coder.laboratory2_vacancies.R;
 import ru.coder.laboratory2_vacancies.StartApp;
 import ru.coder.laboratory2_vacancies.database.SQLiteDB;
-import ru.coder.laboratory2_vacancies.network.VacanciesModel;
+import ru.coder.laboratory2_vacancies.network.VacancyModel;
 
 /**
  * Created by macos_user on 5/13/18.
  */
 
-public class ListVacanciesAdapter extends ArrayAdapter<VacanciesModel> {
+public class ListVacanciesAdapter extends ArrayAdapter<VacancyModel> {
     private boolean[] checkboxStatus;
     private boolean flagViewed;
-    private List<VacanciesModel> list;
+    private List<VacancyModel> list;
     private SQLiteDB mDataBase = StartApp.get(getContext()).loadSQLiteDB();
 
-    public ListVacanciesAdapter(@NonNull Context context, List<VacanciesModel> list, boolean flag) {
+    public ListVacanciesAdapter(@NonNull Context context, List<VacancyModel> list, boolean flag) {
         super(context, 0, list);
         checkboxStatus = new boolean[list.size()];
         this.list = list;
@@ -63,7 +63,7 @@ public class ListVacanciesAdapter extends ArrayAdapter<VacanciesModel> {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        final VacanciesModel model = getItem(position);
+        final VacancyModel model = getItem(position);
 
         if (model != null) {
 
@@ -109,8 +109,8 @@ public class ListVacanciesAdapter extends ArrayAdapter<VacanciesModel> {
                 }
             });
 
-            ArrayList<VacanciesModel> listForFavorites =
-                    (ArrayList<VacanciesModel>) mDataBase.loadFavoriteFromDB();
+            ArrayList<VacancyModel> listForFavorites =
+                    (ArrayList<VacancyModel>) mDataBase.loadFavoriteFromDB();
             if (listForFavorites != null) {
                 for (int i = 0; i < list.size(); i++) {
                     checkboxStatus[i] = false;

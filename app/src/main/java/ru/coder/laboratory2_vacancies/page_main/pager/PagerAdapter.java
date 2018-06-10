@@ -31,4 +31,5 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
     public CharSequence getPageTitle(int position) {
         return mTabs.get(position).getTitle();
     }
+
 }

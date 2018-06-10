@@ -10,7 +10,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.coder.laboratory2_vacancies.network.VacanciesModel;
+import ru.coder.laboratory2_vacancies.network.VacancyModel;
 
 /**
  * Created by macos_user on 5/22/18.
@@ -87,12 +87,12 @@ public class SQLiteDB extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void saveVacanciesFromAPI(List<VacanciesModel> list) {
+    public void saveVacanciesFromAPI(List<VacancyModel> list) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
         for (int i = 0; i < list.size(); i++) {
-            VacanciesModel model = list.get(i);
+            VacancyModel model = list.get(i);
             cv.put(pid, model.getPid());
             cv.put(header, model.getHeader());
             cv.put(profile, model.getProfile());
@@ -109,9 +109,9 @@ public class SQLiteDB extends SQLiteOpenHelper {
         db.close();
     }
 
-    public List<VacanciesModel> loadVacanciesFromDB() {
+    public List<VacancyModel> loadVacanciesFromDB() {
         SQLiteDatabase db = this.getWritableDatabase();
-        List<VacanciesModel> list = new ArrayList<>();
+        List<VacancyModel> list = new ArrayList<>();
 
         Cursor cursor = db.query(VACANCIES_TABLE,
                 null, null, null,
@@ -128,7 +128,7 @@ public class SQLiteDB extends SQLiteOpenHelper {
             int iBody = cursor.getColumnIndex(body);
 
             do {
-                VacanciesModel model = new VacanciesModel();
+                VacancyModel model = new VacancyModel();
                 model.setPid(cursor.getString(iPid));
                 model.setHeader(cursor.getString(iHeader));
                 model.setProfile(cursor.getString(iProfile));
@@ -156,7 +156,7 @@ public class SQLiteDB extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void saveInFavorite(VacanciesModel model) {
+    public void saveInFavorite(VacancyModel model) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(pid, model.getPid());
@@ -174,9 +174,9 @@ public class SQLiteDB extends SQLiteOpenHelper {
         db.close();
     }
 
-    public List<VacanciesModel> loadFavoriteFromDB() {
+    public List<VacancyModel> loadFavoriteFromDB() {
         SQLiteDatabase db = this.getWritableDatabase();
-        List<VacanciesModel> list = new ArrayList<>();
+        List<VacancyModel> list = new ArrayList<>();
 
         Cursor cursor = db.query(FAVORITE_VACANCIES_TABLE,
                 null, null, null,
@@ -194,7 +194,7 @@ public class SQLiteDB extends SQLiteOpenHelper {
             iBody = cursor.getColumnIndex(body);
 
             do {
-                VacanciesModel model = new VacanciesModel();
+                VacancyModel model = new VacancyModel();
                 model.setPid(cursor.getString(iPid));
                 model.setHeader(cursor.getString(iHeader));
                 model.setProfile(cursor.getString(iProfile));

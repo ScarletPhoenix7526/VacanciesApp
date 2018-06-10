@@ -37,6 +37,7 @@ public class MainPageActivity extends AppCompatActivity {
     private Drawer mDrawer;
     private AccountHeader mHeader;
     private Toolbar mToolbar;
+    private PagerAdapter pageAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +55,7 @@ public class MainPageActivity extends AppCompatActivity {
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         tabLayout.setupWithViewPager(pager);
 
+        getIntent();
     }
 
     @Override
