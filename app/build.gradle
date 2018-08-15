@@ -1,14 +1,17 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion versions.compileSDK
     defaultConfig {
         applicationId "ru.coder.laboratory2_vacancies"
-        minSdkVersion 14
-        targetSdkVersion 26
+        minSdkVersion versions.minSDK
+        targetSdkVersion versions.targetSDK
         versionCode 1
-        versionName "1.6.3"
+        versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "BASE_URL", "\"${base_url}\""
+        buildConfigField "String", "BASE_ENDPOINT", "\"${base_endpoint}\""
     }
     buildTypes {
         release {
@@ -16,22 +19,30 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility versions.java
+        targetCompatibility versions.java
+    }
 }
 
+apply from: rootProject.file('libraries.gradle')
+
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:26.1.0'
-    implementation 'com.android.support:cardview-v7:26.1.0'
-    implementation 'com.android.support:design:26.1.0'
-    implementation 'com.android.support:support-annotations:27.1.1'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
-    implementation("com.mikepenz:materialdrawer:6.0.7@aar") {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation libs.appCompat
+    implementation libs.design
+    implementation libs.annotations
+    implementation libs.cardView
+
+    implementation libs.constraint
+
+    implementation (libs.drawer) {
         transitive = true
     }
-    implementation 'com.github.omadahealth:swipy:1.2.3@aar'
-    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation libs.refreshingSwipe
+    implementation libs.retrofit
+    implementation libs.retrofitConverter
+    testImplementation libs.junit
+    androidTestImplementation libs.runner
+    androidTestImplementation libs.espressoCore
 }

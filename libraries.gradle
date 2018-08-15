@@ -1,0 +1,43 @@
+ext {
+    versions = [
+            java                : JavaVersion.VERSION_1_8,
+            compileSDK          : 27,
+            targetSDK           : 27,
+            minSDK              : 17,
+
+            // plugins
+            support             : '27.1.1',
+            constraintLayout    : '1.1.1',
+
+            // libs
+            retrofit            : '2.4.0',
+            drawer              : '6.0.7@aar',
+            refreshingSwipe     : '1.2.3@aar',
+
+            // test
+            espresso            : '3.0.2',
+            runner              : '1.0.2',
+            junit               : '4.12',
+    ]
+    libs = [
+            appCompat           : "com.android.support:appcompat-v7:${versions.support}",
+            design              : "com.android.support:design:${versions.support}",
+            cardView            : "com.android.support:cardview-v7:${versions.support}",
+            support             : "com.android.support:support-v4:${versions.support}",
+            annotations         : "com.android.support:support-annotations:${versions.support}",
+
+            constraint          : "com.android.support.constraint:constraint-layout:${versions.constraintLayout}",
+
+            retrofit            : "com.squareup.retrofit2:retrofit:${versions.retrofit}",
+            retrofitConverter   : "com.squareup.retrofit2:converter-gson:${versions.retrofit}",
+
+            refreshingSwipe     : "com.github.omadahealth:swipy:${versions.refreshingSwipe}",
+
+            drawer              : "com.mikepenz:materialdrawer:${versions.drawer}",
+
+            // test
+            junit               : "junit:junit:${versions.junit}",
+            espressoCore        : "com.android.support.test.espresso:espresso-core:${versions.espresso}",
+            runner              : "com.android.support.test:runner:${versions.runner}"
+    ]
+}

@@ -32,4 +32,13 @@
     <string name="button_searching_done">ГОТОВО</string>
     <string name="btn_search_on_toolbar">Поиск</string>
     <string name="text_no_tel_num">Не указан</string>
+    <string name="searching">Поиск</string>
+    <string name="hint_searching">Поиск</string>
+    <string name="searching_advanced">Расширенный поиск</string>
+    <string name="about_adding_prof">Чтобы получать подходящие вакансии, необходимо ввести профессию</string>
+    <string name="btn_adding_prof">Добавить профессию</string>
+    <string name="btn_cancel">ОТМЕНА</string>
+    <string name="btn_save">СОХРАНИТЬ</string>
+    <string name="text_profession">Profession</string>
+    <string name="text_about_adding_prof_dialog">Сохраните профессию, чтобы получать подходящие специально для Вас вакансии</string>
 </resources>

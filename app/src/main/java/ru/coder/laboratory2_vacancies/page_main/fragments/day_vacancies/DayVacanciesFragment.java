@@ -1,4 +1,4 @@
-package ru.coder.laboratory2_vacancies.page_main.fragments;
+package ru.coder.laboratory2_vacancies.page_main.fragments.day_vacancies;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,15 +23,11 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import ru.coder.laboratory2_vacancies.R;
 import ru.coder.laboratory2_vacancies.StartApp;
-import ru.coder.laboratory2_vacancies.database.SQLiteDB;
-import ru.coder.laboratory2_vacancies.network.GetVacanciesService;
-import ru.coder.laboratory2_vacancies.network.VacancyModel;
+import ru.coder.laboratory2_vacancies.data.database.SQLiteDB;
+import ru.coder.laboratory2_vacancies.data.network.GetVacanciesService;
+import ru.coder.laboratory2_vacancies.data.network.VacancyModel;
 import ru.coder.laboratory2_vacancies.page_details.DetailsPageActivity;
 import ru.coder.laboratory2_vacancies.page_main.ListVacanciesAdapter;
-
-/**
- * Created by macos_user on 5/10/18.
- */
 
 public class DayVacanciesFragment extends Fragment {
 
@@ -87,7 +83,7 @@ public class DayVacanciesFragment extends Fragment {
 
     private void getData() {
         service = StartApp.get(getContext()).getService();
-        service.getVacancies()
+        service.getVacancies("au", "get_all_vacancies", "20", "1")
                 .enqueue(new Callback<List<VacancyModel>>() {
                     @Override
                     public void onResponse(@NonNull Call<List<VacancyModel>> call,
@@ -119,7 +115,7 @@ public class DayVacanciesFragment extends Fragment {
 
     private void getNewData() {
         service = StartApp.get(getContext()).getService();
-        service.getDetectedVacancies()
+        service.getDetectedVacancies("au", "get_post_by_filter", "20", String.valueOf(addNewVacancies), salary, term)
                 .enqueue(new Callback<List<VacancyModel>>() {
                     @Override
                     public void onResponse(@NonNull Call<List<VacancyModel>> call,

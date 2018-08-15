@@ -16,13 +16,9 @@ import java.util.List;
 import ru.coder.laboratory2_vacancies.page_main.ListVacanciesAdapter;
 import ru.coder.laboratory2_vacancies.R;
 import ru.coder.laboratory2_vacancies.StartApp;
-import ru.coder.laboratory2_vacancies.database.SQLiteDB;
-import ru.coder.laboratory2_vacancies.network.VacancyModel;
+import ru.coder.laboratory2_vacancies.data.database.SQLiteDB;
+import ru.coder.laboratory2_vacancies.data.network.VacancyModel;
 import ru.coder.laboratory2_vacancies.page_details.DetailsPageActivity;
-
-/**
- * Created by macos_user on 5/23/18.
- */
 
 public class FavoriteActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 

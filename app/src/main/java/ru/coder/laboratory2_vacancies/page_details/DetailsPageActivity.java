@@ -28,12 +28,8 @@ import java.util.Locale;
 
 import ru.coder.laboratory2_vacancies.R;
 import ru.coder.laboratory2_vacancies.StartApp;
-import ru.coder.laboratory2_vacancies.database.SQLiteDB;
-import ru.coder.laboratory2_vacancies.network.VacancyModel;
-
-/**
- * Created by macos_user on 5/19/18.
- */
+import ru.coder.laboratory2_vacancies.data.database.SQLiteDB;
+import ru.coder.laboratory2_vacancies.data.network.VacancyModel;
 
 public class DetailsPageActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -115,7 +111,6 @@ public class DetailsPageActivity extends AppCompatActivity implements View.OnCli
                     llPressPrevious.setClickable(true);
                     mPositionCardView++;
                     getDataFromApi();
-                    saveViewed(listWithVacancies.get(mPositionCardView));
                 }
                 break;
 
@@ -130,7 +125,6 @@ public class DetailsPageActivity extends AppCompatActivity implements View.OnCli
                     llPressNext.setVisibility(View.VISIBLE);
                     mPositionCardView--;
                     getDataFromApi();
-                    saveViewed(listWithVacancies.get(mPositionCardView));
                 }
                 break;
 
@@ -180,13 +174,6 @@ public class DetailsPageActivity extends AppCompatActivity implements View.OnCli
             tvSalary.setText(model.getSalary());
         }
         checkBox.setChecked(getCheckboxState(model));
-        saveViewed(model);
-
-
-    }
-
-    private void saveViewed(VacancyModel model) {
-        mDataBase.saveViewedVacancy(model.getPid());
     }
 
     private boolean getCheckboxState(VacancyModel model) {

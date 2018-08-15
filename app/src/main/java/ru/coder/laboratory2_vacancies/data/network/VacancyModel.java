@@ -1,4 +1,4 @@
-package ru.coder.laboratory2_vacancies.network;
+package ru.coder.laboratory2_vacancies.data.network;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -50,6 +50,16 @@ public class VacancyModel implements Serializable {
     @SerializedName("body")
     @Expose
     private String body;
+
+    private boolean isChecked;
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
+    }
 
 
     public Object getId() {

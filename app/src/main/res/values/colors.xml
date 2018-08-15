@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#72467b</color>
-    <color name="colorPrimaryDark">#72467b</color>
+    <color name="colorPrimary">#7691cc</color>
+    <color name="colorPrimaryDark">#7691cc</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="colorDarkPurple">#72467b</color>
+    <color name="colorDarkPurple">#7691cc</color>
     <color name="colorDarkOrange">#ffa500</color>
     <color name="textDateAndTime">#878787</color>
     <color name="textDescriptionPosition">#767676</color>

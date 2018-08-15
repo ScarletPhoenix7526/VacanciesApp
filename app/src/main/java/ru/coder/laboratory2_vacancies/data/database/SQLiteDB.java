@@ -1,4 +1,4 @@
-package ru.coder.laboratory2_vacancies.database;
+package ru.coder.laboratory2_vacancies.data.database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -10,11 +10,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.coder.laboratory2_vacancies.network.VacancyModel;
-
-/**
- * Created by macos_user on 5/22/18.
- */
+import ru.coder.laboratory2_vacancies.data.network.VacancyModel;
 
 public class SQLiteDB extends SQLiteOpenHelper {
 
@@ -22,7 +18,6 @@ public class SQLiteDB extends SQLiteOpenHelper {
     private static final int DB_VERSION = 2;
 
     private static final String ID = "_id";
-    private static final String id_for_viewed = "id_viewed";
     private static final String pid = "pid";
     private static final String header = "header";
     private static final String profile = "profile";
@@ -43,7 +38,6 @@ public class SQLiteDB extends SQLiteOpenHelper {
             profile + " TEXT, " +
             salary + " TEXT, " +
             telephone + " TEXT, " +
-            id_for_viewed + " INTEGER, " +
             data + " TEXT, " +
             profession + " TEXT, " +
             site_address + " TEXT, " +
@@ -55,7 +49,6 @@ public class SQLiteDB extends SQLiteOpenHelper {
             header + " TEXT, " +
             profile + " TEXT, " +
             salary + " TEXT, " +
-            id_for_viewed + " INTEGER, " +
             telephone + " TEXT, " +
             data + " TEXT, " +
             profession + " TEXT, " +
@@ -64,8 +57,7 @@ public class SQLiteDB extends SQLiteOpenHelper {
 
     private final String CREATE_VIEWED_VACANCIES_TABLE = "CREATE TABLE IF NOT EXISTS " +
             VIEWED_VACANCIES_TABLE + "(" +
-            ID + " INTEGER_PRIMARY_KEY, " +
-            id_for_viewed + " TEXT " + ");";
+            ID + " INTEGER_PRIMARY_KEY, " + ");";
 
 
     public SQLiteDB(Context context) {
@@ -76,14 +68,12 @@ public class SQLiteDB extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_VACANCIES_TABLE);
         db.execSQL(CREATE_FAVORITE_VACANCIES_TABLE);
-        db.execSQL(CREATE_VIEWED_VACANCIES_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + VACANCIES_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + FAVORITE_VACANCIES_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + VIEWED_VACANCIES_TABLE);
         onCreate(db);
     }
 
@@ -222,39 +212,5 @@ public class SQLiteDB extends SQLiteOpenHelper {
         db.delete(FAVORITE_VACANCIES_TABLE, pid + "=?", new String[] {pos});
         Log.d("VacanciesIsDeleted", "delete is ok" + pos);
         db.close();
-    }
-
-    public void saveViewedVacancy(String viewedKey) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put(id_for_viewed, viewedKey);
-        int a = db.update(VIEWED_VACANCIES_TABLE, cv,
-                id_for_viewed + " = ?", new String[] {viewedKey});
-        if (a <= 0) {
-            db.insert(VIEWED_VACANCIES_TABLE, null, cv);
-        }
-        db.close();
-    }
-
-    public ArrayList<String> loadViewed() {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ArrayList<String> list = new ArrayList<>();
-        Cursor cursor = db.query(VIEWED_VACANCIES_TABLE,
-                null, null, null,
-                null, null, null);
-        if (cursor.moveToFirst()) {
-            int iId_viewed = cursor.getColumnIndex(id_for_viewed);
-
-            do {
-                list.add(cursor.getString(iId_viewed));
-            } while (cursor.moveToNext());
-            Log.d("getting rows", "rows is get");
-        } else {
-            Log.d("no getting rows", "rows is getn't");
-        }
-
-        cursor.close();
-        db.close();
-        return list;
     }
 }

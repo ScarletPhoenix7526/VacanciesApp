@@ -2,10 +2,6 @@ package ru.coder.laboratory2_vacancies.page_main.pager;
 
 import android.support.v4.app.Fragment;
 
-/**
- * Created by macos_user on 5/10/18.
- */
-
 public class PagerTabItem {
     private final Fragment fragment;
     private final CharSequence title;

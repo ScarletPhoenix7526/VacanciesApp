@@ -6,10 +6,6 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import java.util.ArrayList;
 
-/**
- * Created by macos_user on 5/10/18.
- */
-
 public class PagerAdapter extends FragmentStatePagerAdapter {
     private ArrayList<PagerTabItem> mTabs;
 

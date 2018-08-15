@@ -13,16 +13,12 @@ import okhttp3.Request;
 import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import ru.coder.laboratory2_vacancies.database.SQLiteDB;
-import ru.coder.laboratory2_vacancies.network.GetVacanciesService;
-
-/**
- * Created by macos_user on 5/14/18.
- */
+import ru.coder.laboratory2_vacancies.data.database.SQLiteDB;
+import ru.coder.laboratory2_vacancies.data.network.GetVacanciesService;
 
 public class StartApp extends Application {
     private GetVacanciesService service;
-    private final static String BASE_URL = "";
+    private final static String BASE_URL = BuildConfig.BASE_URL;
     private SQLiteDB sqLiteDB;
 
 

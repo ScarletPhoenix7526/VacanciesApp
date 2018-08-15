@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,23 +21,19 @@ import java.util.Locale;
 
 import ru.coder.laboratory2_vacancies.R;
 import ru.coder.laboratory2_vacancies.StartApp;
-import ru.coder.laboratory2_vacancies.database.SQLiteDB;
-import ru.coder.laboratory2_vacancies.network.VacancyModel;
-
-/**
- * Created by macos_user on 5/13/18.
- */
+import ru.coder.laboratory2_vacancies.data.database.SQLiteDB;
+import ru.coder.laboratory2_vacancies.data.network.VacancyModel;
 
 public class ListVacanciesAdapter extends ArrayAdapter<VacancyModel> {
     private boolean[] checkboxStatus;
     private boolean flagViewed;
-    private List<VacancyModel> list;
+    private List<VacancyModel> mList;
     private SQLiteDB mDataBase = StartApp.get(getContext()).loadSQLiteDB();
 
     public ListVacanciesAdapter(@NonNull Context context, List<VacancyModel> list, boolean flag) {
         super(context, 0, list);
         checkboxStatus = new boolean[list.size()];
-        this.list = list;
+        this.mList = list;
         this.flagViewed = flag;
     }
 
@@ -55,7 +50,6 @@ public class ListVacanciesAdapter extends ArrayAdapter<VacancyModel> {
             holder.tvSalary = convertView.findViewById(R.id.tvSalary);
             holder.tvTopic = convertView.findViewById(R.id.tvTopic);
             holder.tvWhenCreated = convertView.findViewById(R.id.tvWhenCreated);
-            holder.llViewed = convertView.findViewById(R.id.llViewed);
             holder.checkBox = convertView.findViewById(R.id.cbCheckbox);
             convertView.setTag(holder);
 
@@ -79,43 +73,29 @@ public class ListVacanciesAdapter extends ArrayAdapter<VacancyModel> {
                 holder.tvSalary.setText(model.getSalary());
             }
 
-            if (flagViewed) {
-                if (viewedVacancy(model.getPid())) {
-                    holder.llViewed.setVisibility(View.VISIBLE);
-                }
-            }
-
             holder.tvPositionDescription.setText(model.getHeader());
 
-            holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean flag) {
-                    checkboxStatus[position] = flag;
-                }
-            });
+            holder.checkBox.setOnCheckedChangeListener((buttonView, flag) -> checkboxStatus[position] = flag);
 
-            holder.checkBox.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (checkboxStatus[position] /*== flagCheckBox*/) {
-                        mDataBase.saveInFavorite(model);
-                        Toast.makeText(getContext(),
-                                "Добавлено в избранное", Toast.LENGTH_SHORT).show();
-                    } else {
-                        mDataBase.deleteFavorite(model.getPid());
-                        Toast.makeText(getContext(),
-                                "Удалено из избранных", Toast.LENGTH_SHORT).show();
-                    }
+            holder.checkBox.setOnClickListener(v -> {
+                if (checkboxStatus[position] /*== flagCheckBox*/) {
+                    mDataBase.saveInFavorite(model);
+                    Toast.makeText(getContext(),
+                            "Добавлено в избранное", Toast.LENGTH_SHORT).show();
+                } else {
+                    mDataBase.deleteFavorite(model.getPid());
+                    Toast.makeText(getContext(),
+                            "Удалено из избранных", Toast.LENGTH_SHORT).show();
                 }
             });
 
             ArrayList<VacancyModel> listForFavorites =
                     (ArrayList<VacancyModel>) mDataBase.loadFavoriteFromDB();
             if (listForFavorites != null) {
-                for (int i = 0; i < list.size(); i++) {
+                for (int i = 0; i < mList.size(); i++) {
                     checkboxStatus[i] = false;
                     for (int m = 0; m < listForFavorites.size(); m++) {
-                        if (list.get(i).getPid().equals(listForFavorites.get(m).getPid())) {
+                        if (mList.get(i).getPid().equals(listForFavorites.get(m).getPid())) {
                             checkboxStatus[i] = true;
                         }
                     }
@@ -127,20 +107,30 @@ public class ListVacanciesAdapter extends ArrayAdapter<VacancyModel> {
         return convertView;
     }
 
+    public void addVacancyModels(List<VacancyModel> vacancyModels) {
+        mList.addAll(vacancyModels);
+        notifyDataSetChanged();
+    }
+
+    public void setVacancyModels(List<VacancyModel> vacancyModels) {
+        if (vacancyModels.isEmpty()) {
+            return;
+        }
+
+        for (int i = 0; i < mList.size(); i++) {
+            for (VacancyModel model : vacancyModels) {
+                if (model.getPid().equals(mList.get(i).getPid())) {
+                    mList.get(i).setChecked(vacancyModels.get(i).isChecked());
+                }
+            }
+        }
+        notifyDataSetChanged();
+    }
+
     class ViewHolder {
         TextView tvTopic, tvWhenCreated, tvPositionDescription, tvSalary;
         CheckBox checkBox;
         LinearLayout llViewed;
-    }
-
-    private boolean viewedVacancy(String key) {
-        ArrayList<String> saveViewed = mDataBase.loadViewed();
-        for (int i = 0; i < saveViewed.size(); i++) {
-            if (key.equals(saveViewed.get(i))) {
-                return true;
-            }
-        }
-        return false;
     }
 
     private String transformingDate(String date) {

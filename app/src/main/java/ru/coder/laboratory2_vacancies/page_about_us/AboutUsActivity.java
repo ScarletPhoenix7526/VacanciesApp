@@ -8,10 +8,6 @@ import android.view.MenuItem;
 
 import ru.coder.laboratory2_vacancies.R;
 
-/**
- * Created by macos_user on 5/23/18.
- */
-
 public class AboutUsActivity extends AppCompatActivity {
 
     @Override
