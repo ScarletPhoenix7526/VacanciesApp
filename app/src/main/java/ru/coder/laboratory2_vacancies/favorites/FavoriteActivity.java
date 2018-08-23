@@ -1,4 +1,4 @@
-package ru.coder.laboratory2_vacancies.page_favorite;
+package ru.coder.laboratory2_vacancies.favorites;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,18 +13,16 @@ import android.widget.ListView;
 import java.io.Serializable;
 import java.util.List;
 
-import ru.coder.laboratory2_vacancies.page_main.ListVacanciesAdapter;
 import ru.coder.laboratory2_vacancies.R;
 import ru.coder.laboratory2_vacancies.StartApp;
 import ru.coder.laboratory2_vacancies.data.database.SQLiteDB;
 import ru.coder.laboratory2_vacancies.data.network.VacancyModel;
-import ru.coder.laboratory2_vacancies.page_details.DetailsPageActivity;
+import ru.coder.laboratory2_vacancies.details.DetailsPageActivity;
+import ru.coder.laboratory2_vacancies.main.ListVacanciesAdapter;
 
 public class FavoriteActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
-    private SQLiteDB mDataBase;
-    private List<VacancyModel> listWithVacancies;
-    private ListVacanciesAdapter adapter;
+    private List<VacancyModel> mListWithVacancies;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,13 +36,13 @@ public class FavoriteActivity extends AppCompatActivity implements AdapterView.O
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        mDataBase = StartApp.get(getApplicationContext()).loadSQLiteDB();
+        SQLiteDB mDataBase = StartApp.get(getApplicationContext()).loadSQLiteDB();
         ListView listView = findViewById(R.id.listVacancies);
-        listWithVacancies = mDataBase.loadFavoriteFromDB();
-        if (listWithVacancies.isEmpty()) {
+        mListWithVacancies = mDataBase.loadFavoriteFromDB();
+        if (mListWithVacancies.isEmpty()) {
             return;
         }
-        adapter = new ListVacanciesAdapter(getApplicationContext(), listWithVacancies, false);
+        ListVacanciesAdapter adapter = new ListVacanciesAdapter(getApplicationContext(), mListWithVacancies, false);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
     }
@@ -64,7 +62,7 @@ public class FavoriteActivity extends AppCompatActivity implements AdapterView.O
         Intent intent = new Intent(this, DetailsPageActivity.class);
         intent.putExtra("position", position);
         intent.putExtra("marker", true);
-        intent.putExtra("listWithVacancies", (Serializable) listWithVacancies);
+        intent.putExtra("mListWithVacancies", (Serializable) mListWithVacancies);
         startActivity(intent);
     }
 }

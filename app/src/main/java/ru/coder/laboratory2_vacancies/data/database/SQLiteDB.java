@@ -17,7 +17,6 @@ public class SQLiteDB extends SQLiteOpenHelper {
     private static final String DB_NAME = "VacanciesDB";
     private static final int DB_VERSION = 2;
 
-    private static final String ID = "_id";
     private static final String pid = "pid";
     private static final String header = "header";
     private static final String profile = "profile";
@@ -29,7 +28,6 @@ public class SQLiteDB extends SQLiteOpenHelper {
     private static final String body = "body";
     private static final String VACANCIES_TABLE = "Vacancies_Table";
     private static final String FAVORITE_VACANCIES_TABLE = "Favorite_Vacancies_Table";
-    private static final String VIEWED_VACANCIES_TABLE = "Viewed_Vacancies_Table";
 
     private final String CREATE_VACANCIES_TABLE = "CREATE TABLE IF NOT EXISTS " +
             VACANCIES_TABLE + "(" +
@@ -54,11 +52,6 @@ public class SQLiteDB extends SQLiteOpenHelper {
             profession + " TEXT, " +
             site_address + " TEXT, " +
             body + " TEXT " + ");";
-
-    private final String CREATE_VIEWED_VACANCIES_TABLE = "CREATE TABLE IF NOT EXISTS " +
-            VIEWED_VACANCIES_TABLE + "(" +
-            ID + " INTEGER_PRIMARY_KEY, " + ");";
-
 
     public SQLiteDB(Context context) {
         super(context, DB_NAME, null, DB_VERSION);

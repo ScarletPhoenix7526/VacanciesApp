@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="title_font">22sp</dimen>
+    <dimen name="search_font">16sp</dimen>
+    <dimen name="medium_margin">6dp</dimen>
+    <dimen name="medium_padding">8dp</dimen>
+</resources>

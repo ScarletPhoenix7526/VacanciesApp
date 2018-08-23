@@ -41,4 +41,8 @@
     <string name="btn_save">СОХРАНИТЬ</string>
     <string name="text_profession">Profession</string>
     <string name="text_about_adding_prof_dialog">Сохраните профессию, чтобы получать подходящие специально для Вас вакансии</string>
+    <string name="empty_search">Персональный поиск пустой</string>
+    <string name="add_search">Добавить поиск</string>
+    <string name="search_btn">НАЙТИ</string>
+    <string name="error_loading_vacancies">Ошибка загрузки вакансий</string>
 </resources>

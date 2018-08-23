@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="ru.coder.laboratory2_vacancies.page_main.MainPageActivity">
+    tools:context="ru.coder.laboratory2_vacancies.main.MainPageActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -23,12 +23,91 @@
         app:tabSelectedTextColor="@android:color/white"
         app:tabTextColor="@android:color/white" />
 
+    <LinearLayout
+        android:id="@+id/llSearchQueryBlock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/medium_margin"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <TextView
+            android:id="@+id/tvSearchQuery"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="@dimen/medium_padding"
+            android:textSize="@dimen/search_font"
+            tools:text="android" />
+
+        <ImageButton
+            android:id="@+id/ivClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_baseline_close_24px" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llTermQueryBlock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/medium_margin"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <TextView
+            android:id="@+id/tvTermQuery"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="@dimen/medium_padding"
+            android:textSize="@dimen/search_font"
+            tools:text="android" />
+
+        <ImageButton
+            android:id="@+id/ivCloseTerm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_baseline_close_24px" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llSalaryQueryBlock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/medium_margin"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <TextView
+            android:id="@+id/tvSalaryQuery"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="@dimen/medium_padding"
+            android:textSize="@dimen/search_font"
+            tools:text="android" />
+
+        <ImageButton
+            android:id="@+id/ivCloseSalary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_baseline_close_24px" />
+    </LinearLayout>
+
     <ProgressBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="180dp"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        tools:visibility="visible" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"

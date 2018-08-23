@@ -1,7 +1,6 @@
-package ru.coder.laboratory2_vacancies.page_details;
+package ru.coder.laboratory2_vacancies.details;
 
 import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -33,23 +32,20 @@ import ru.coder.laboratory2_vacancies.data.network.VacancyModel;
 
 public class DetailsPageActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Toolbar mToolbar;
-    private LinearLayout llPressNext, llPressPrevious, linearPress;
+    private LinearLayout llPressNext, llPressPrevious;
     private TextView tvTopic, tvEmployerName, tvWhenCreated, tvSalary,
             tvFromSite, tvTelephoneNumber, tvDetailsAboutVacancy;
-    private Button btnCallNumber;
-    private CheckBox checkBox;
-    private List<VacancyModel> listWithVacancies;
-    private int mPositionCardView;
+    private CheckBox mCheckBox;
+    private List<VacancyModel> mListWithVacancies;
+    private int positionCardView;
     private SQLiteDB mDataBase;
-    private VacancyModel model;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details_page);
 
-        mToolbar = findViewById(R.id.toolbar);
+        Toolbar mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
         if (getSupportActionBar() != null) {
@@ -57,10 +53,10 @@ public class DetailsPageActivity extends AppCompatActivity implements View.OnCli
         }
 
         Intent intent = getIntent();
-        listWithVacancies =
-                (List<VacancyModel>) intent.getSerializableExtra("listWithVacancies");
+        mListWithVacancies =
+                (List<VacancyModel>) intent.getSerializableExtra("mListWithVacancies");
 
-        mPositionCardView = intent.getIntExtra("position", 0);
+        positionCardView = intent.getIntExtra("position", 0);
         tvTopic = findViewById(R.id.tvTopic);
         tvEmployerName = findViewById(R.id.tvEmployerName);
         tvWhenCreated = findViewById(R.id.tvWhenCreated);
@@ -68,17 +64,16 @@ public class DetailsPageActivity extends AppCompatActivity implements View.OnCli
         tvFromSite = findViewById(R.id.tvFromSite);
         tvTelephoneNumber = findViewById(R.id.tvTelephoneNumber);
         tvDetailsAboutVacancy = findViewById(R.id.tvDetailsAboutVacancy);
-        btnCallNumber = findViewById(R.id.btnCallNumber);
+        Button btnCallNumber = findViewById(R.id.btnCallNumber);
         btnCallNumber.setOnClickListener(this);
-        linearPress = findViewById(R.id.linearPress);
         llPressNext = findViewById(R.id.llPressNext);
-        if (listWithVacancies.size() == 1) llPressNext.setVisibility(View.INVISIBLE);
+        if (mListWithVacancies.size() == 1) llPressNext.setVisibility(View.INVISIBLE);
         llPressNext.setOnClickListener(this);
         llPressPrevious = findViewById(R.id.llPressPrevious);
-        if (listWithVacancies.size() == 1) llPressPrevious.setVisibility(View.INVISIBLE);
+        if (mListWithVacancies.size() == 1) llPressPrevious.setVisibility(View.INVISIBLE);
         llPressPrevious.setOnClickListener(this);
-        checkBox = findViewById(R.id.cbCheckbox);
-        checkBox.setOnClickListener(this);
+        mCheckBox = findViewById(R.id.cbCheckbox);
+        mCheckBox.setOnClickListener(this);
         mDataBase = StartApp.get(this).loadSQLiteDB();
 
         getDataFromApi();
@@ -99,9 +94,9 @@ public class DetailsPageActivity extends AppCompatActivity implements View.OnCli
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.llPressNext:
-                if (mPositionCardView == listWithVacancies.size() - 1) {
+                if (positionCardView == mListWithVacancies.size() - 1) {
                     llPressNext.setVisibility(View.INVISIBLE);
-                } else if (listWithVacancies.size() == 1) {
+                } else if (mListWithVacancies.size() == 1) {
                     llPressPrevious.setVisibility(View.INVISIBLE);
                     llPressPrevious.setVisibility(View.INVISIBLE);
                 } else {
@@ -109,21 +104,21 @@ public class DetailsPageActivity extends AppCompatActivity implements View.OnCli
                     llPressNext.setVisibility(View.VISIBLE);
                     llPressNext.setClickable(true);
                     llPressPrevious.setClickable(true);
-                    mPositionCardView++;
+                    positionCardView++;
                     getDataFromApi();
                 }
                 break;
 
             case R.id.llPressPrevious:
-                if (mPositionCardView == 0) {
+                if (positionCardView == 0) {
                     llPressPrevious.setVisibility(View.INVISIBLE);
-                } else if (listWithVacancies.size() == 1) {
+                } else if (mListWithVacancies.size() == 1) {
                     llPressPrevious.setVisibility(View.INVISIBLE);
                     llPressPrevious.setVisibility(View.INVISIBLE);
                 } else {
                     llPressPrevious.setVisibility(View.VISIBLE);
                     llPressNext.setVisibility(View.VISIBLE);
-                    mPositionCardView--;
+                    positionCardView--;
                     getDataFromApi();
                 }
                 break;
@@ -133,12 +128,12 @@ public class DetailsPageActivity extends AppCompatActivity implements View.OnCli
                 break;
 
             case R.id.cbCheckbox:
-                if (checkBox.isChecked()) {
-                    saveFavorite(listWithVacancies.get(mPositionCardView));
+                if (mCheckBox.isChecked()) {
+                    saveFavorite(mListWithVacancies.get(positionCardView));
                     Toast.makeText(getApplicationContext(), "Добавлено в избранное",
                             Toast.LENGTH_SHORT).show();
                 } else {
-                    deleteFavorite(listWithVacancies.get(mPositionCardView));
+                    deleteFavorite(mListWithVacancies.get(positionCardView));
                     Toast.makeText(getApplicationContext(), "Удалено из избранных",
                             Toast.LENGTH_SHORT).show();
                 }
@@ -154,7 +149,7 @@ public class DetailsPageActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void getDataFromApi() {
-        model = listWithVacancies.get(mPositionCardView);
+        VacancyModel model = mListWithVacancies.get(positionCardView);
         tvTopic.setText(model.getHeader());
         tvEmployerName.setText(model.getProfile());
         tvWhenCreated.setText(transformingDate(model.getData()));
@@ -173,7 +168,7 @@ public class DetailsPageActivity extends AppCompatActivity implements View.OnCli
         } else {
             tvSalary.setText(model.getSalary());
         }
-        checkBox.setChecked(getCheckboxState(model));
+        mCheckBox.setChecked(getCheckboxState(model));
     }
 
     private boolean getCheckboxState(VacancyModel model) {
@@ -204,31 +199,25 @@ public class DetailsPageActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void callOnTelephone() {
-        String onPhoneCall = listWithVacancies.get(mPositionCardView).getTelephone();
+        AlertDialog.Builder buildDialog = new AlertDialog.Builder(this);
+        String onPhoneCall = mListWithVacancies.get(positionCardView).getTelephone();
         if (onPhoneCall.contains(";")) {
-            onPhoneCall.replace(".", "");
+            onPhoneCall = onPhoneCall.replace(".", "");
             final String[] callList = onPhoneCall.split(";");
-            AlertDialog.Builder buildDialog = new AlertDialog.Builder(this);
-            buildDialog.setItems(callList, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    Intent intentCall = new Intent(Intent.ACTION_CALL);
-                    intentCall.setData(Uri.parse("tel: " + callList[which]));
-                    if (ActivityCompat.checkSelfPermission(getApplicationContext(),
-                            Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                        startActivity(intentCall);
-                    } else {
-                        // todo request permission
-                    }
+            buildDialog.setItems(callList, (dialog, which) -> {
+                Intent intentCall = new Intent(Intent.ACTION_CALL);
+                intentCall.setData(Uri.parse("tel: " + callList[which]));
+                if (ActivityCompat.checkSelfPermission(getApplicationContext(),
+                        Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    startActivity(intentCall);
                 }
             });
 
             AlertDialog dialog = buildDialog.create();
             dialog.show();
-
         } else {
             Intent intentCall = new Intent(Intent.ACTION_CALL);
-            intentCall.setData(Uri.parse("tel: " + onPhoneCall.replace(".", "")));
+            intentCall.setData(Uri.parse("tel: " + onPhoneCall.replace(" ", "")));
             startActivity(intentCall);
         }
     }

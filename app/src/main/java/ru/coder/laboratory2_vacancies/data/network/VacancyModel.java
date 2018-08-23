@@ -5,10 +5,6 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-/**
- * Created by macos_user on 5/13/18.
- */
-
 public class VacancyModel implements Serializable {
 
     @SerializedName("id")
@@ -53,6 +49,8 @@ public class VacancyModel implements Serializable {
 
     private boolean isChecked;
 
+    private String date;
+
     public boolean isChecked() {
         return isChecked;
     }
@@ -61,6 +59,13 @@ public class VacancyModel implements Serializable {
         isChecked = checked;
     }
 
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
 
     public Object getId() {
         return id;

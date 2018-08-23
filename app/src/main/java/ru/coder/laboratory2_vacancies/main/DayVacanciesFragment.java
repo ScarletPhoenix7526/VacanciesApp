@@ -1,4 +1,4 @@
-package ru.coder.laboratory2_vacancies.page_main.fragments.day_vacancies;
+package ru.coder.laboratory2_vacancies.main;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,12 +8,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.omadahealth.github.swipyrefreshlayout.library.SwipyRefreshLayout;
-import com.omadahealth.github.swipyrefreshlayout.library.SwipyRefreshLayoutDirection;
 
 import java.io.Serializable;
 import java.util.List;
@@ -26,76 +24,111 @@ import ru.coder.laboratory2_vacancies.StartApp;
 import ru.coder.laboratory2_vacancies.data.database.SQLiteDB;
 import ru.coder.laboratory2_vacancies.data.network.GetVacanciesService;
 import ru.coder.laboratory2_vacancies.data.network.VacancyModel;
-import ru.coder.laboratory2_vacancies.page_details.DetailsPageActivity;
-import ru.coder.laboratory2_vacancies.page_main.ListVacanciesAdapter;
+import ru.coder.laboratory2_vacancies.details.DetailsPageActivity;
 
-public class DayVacanciesFragment extends Fragment {
+public class DayVacanciesFragment extends Fragment implements MainPageActivity.UpdateTerms {
 
-    private GetVacanciesService service;
-    private ListView vacanciesListView;
-    private List<VacancyModel> listWithVacancies;
-    private ListVacanciesAdapter adapter;
+    private GetVacanciesService mService;
+    private ListView mVacanciesListView;
+    private List<VacancyModel> mListWithVacancies;
+    private DesirableVacanciesAdapter mAdapter;
     private SQLiteDB mDateBase;
     private SwipyRefreshLayout mAddingToList;
     private int addNewVacancies = 1;
-    private String term = "", salary = "";
+    private String term = "", salary = "", search = "";
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mService = StartApp.get(getContext()).getService();
+        mDateBase = StartApp.get(getContext()).loadSQLiteDB();
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_day_v, container, false);
-        vacanciesListView = view.findViewById(R.id.listVacancies);
+        mVacanciesListView = view.findViewById(R.id.listVacancies);
         mAddingToList = view.findViewById(R.id.addingToList);
-        mAddingToList.setOnRefreshListener(new SwipyRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh(SwipyRefreshLayoutDirection direction) {
-                addNewVacancies += 1;
-                getNewData();
-            }
+        mAddingToList.setOnRefreshListener(direction -> {
+            addNewVacancies += 1;
+            getNewData();
         });
-        vacanciesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getContext(), DetailsPageActivity.class);
-                intent.putExtra("position", position);
-                intent.putExtra("listWithVacancies", (Serializable) listWithVacancies);
-                startActivity(intent);
-            }
+        mVacanciesListView.setOnItemClickListener((parent, view1, position, id) -> {
+            Intent intent = new Intent(getContext(), DetailsPageActivity.class);
+            intent.putExtra("position", position);
+            intent.putExtra("mListWithVacancies", (Serializable) mListWithVacancies);
+            startActivity(intent);
         });
 
-        mDateBase = StartApp.get(getContext()).loadSQLiteDB();
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (adapter != null) adapter.notifyDataSetChanged();
+        if (mAdapter != null) mAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getData();
+    }
 
+    @Override
+    public void updateSearch(@Nullable String term, @Nullable String salary, @Nullable String search) {
+        addNewVacancies = 1;
+        if (term != null) {
+            this.term = term;
+        }
+        if (salary != null) {
+            this.salary = salary;
+        }
+        if (search != null) {
+            this.search = search;
+        }
+        mAdapter.clear();
+        getNewData();
+    }
+
+    @Override
+    public void clearSearch() {
+        this.search = null;
+        mListWithVacancies.clear();
+        getNewData();
+    }
+
+    @Override
+    public void clearSalary() {
+        this.salary = null;
+        mListWithVacancies.clear();
+        getNewData();
+    }
+
+    @Override
+    public void clearTerm() {
+        this.term = null;
+        mListWithVacancies.clear();
+        getNewData();
     }
 
     private void getData() {
-        service = StartApp.get(getContext()).getService();
-        service.getVacancies("au", "get_all_vacancies", "20", "1")
+        mService = StartApp.get(getContext()).getService();
+        mService.getVacancies("au", "get_all_vacancies", "20", "1")
                 .enqueue(new Callback<List<VacancyModel>>() {
                     @Override
                     public void onResponse(@NonNull Call<List<VacancyModel>> call,
                                            @NonNull Response<List<VacancyModel>> response) {
-                        listWithVacancies = response.body();
+                        mListWithVacancies = response.body();
                         if (getContext() != null) {
-                            adapter = new ListVacanciesAdapter(getContext(),
-                                    listWithVacancies, true);
-                            vacanciesListView.setAdapter(adapter);
+                            mAdapter = new DesirableVacanciesAdapter(getContext(),
+                                    mListWithVacancies);
+                            mVacanciesListView.setAdapter(mAdapter);
                         }
                         mDateBase.deleteVacanciesFromDB();
-                        mDateBase.saveVacanciesFromAPI(listWithVacancies);
+                        mDateBase.saveVacanciesFromAPI(mListWithVacancies);
                     }
 
                     @Override
@@ -105,28 +138,26 @@ public class DayVacanciesFragment extends Fragment {
                                 Toast.LENGTH_SHORT).show();
                         List<VacancyModel> listWithVacancies = mDateBase.loadVacanciesFromDB();
                         if (getContext() != null) {
-                            adapter = new ListVacanciesAdapter(getContext(),
-                                    listWithVacancies, true);
+                            mAdapter = new DesirableVacanciesAdapter(getContext(),
+                                    listWithVacancies);
                         }
-                        vacanciesListView.setAdapter(adapter);
+                        mVacanciesListView.setAdapter(mAdapter);
                     }
                 });
     }
 
     private void getNewData() {
-        service = StartApp.get(getContext()).getService();
-        service.getDetectedVacancies("au", "get_post_by_filter", "20", String.valueOf(addNewVacancies), salary, term)
+        mService.getDetectedVacancies("au", "get_post_by_filter", "20", String.valueOf(addNewVacancies), salary, term, search)
                 .enqueue(new Callback<List<VacancyModel>>() {
                     @Override
                     public void onResponse(@NonNull Call<List<VacancyModel>> call,
                                            @NonNull Response<List<VacancyModel>> response) {
                         if (response.isSuccessful() && response.body() != null) {
-                            listWithVacancies.addAll(response.body());
+                            mListWithVacancies.addAll(response.body());
                             if (getContext() != null) {
-                                adapter = new ListVacanciesAdapter(getContext(),
-                                        listWithVacancies, true);
+                                mAdapter = new DesirableVacanciesAdapter(getContext(), mListWithVacancies);
                             }
-                            vacanciesListView.setAdapter(adapter);
+                            mVacanciesListView.setAdapter(mAdapter);
                             mAddingToList.setRefreshing(false);
                         } else {
                             mAddingToList.setRefreshing(false);

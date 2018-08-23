@@ -1,4 +1,4 @@
-package ru.coder.laboratory2_vacancies.page_main;
+package ru.coder.laboratory2_vacancies.main;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -78,7 +77,7 @@ public class ListVacanciesAdapter extends ArrayAdapter<VacancyModel> {
             holder.checkBox.setOnCheckedChangeListener((buttonView, flag) -> checkboxStatus[position] = flag);
 
             holder.checkBox.setOnClickListener(v -> {
-                if (checkboxStatus[position] /*== flagCheckBox*/) {
+                if (checkboxStatus[position]) {
                     mDataBase.saveInFavorite(model);
                     Toast.makeText(getContext(),
                             "Добавлено в избранное", Toast.LENGTH_SHORT).show();
@@ -107,30 +106,9 @@ public class ListVacanciesAdapter extends ArrayAdapter<VacancyModel> {
         return convertView;
     }
 
-    public void addVacancyModels(List<VacancyModel> vacancyModels) {
-        mList.addAll(vacancyModels);
-        notifyDataSetChanged();
-    }
-
-    public void setVacancyModels(List<VacancyModel> vacancyModels) {
-        if (vacancyModels.isEmpty()) {
-            return;
-        }
-
-        for (int i = 0; i < mList.size(); i++) {
-            for (VacancyModel model : vacancyModels) {
-                if (model.getPid().equals(mList.get(i).getPid())) {
-                    mList.get(i).setChecked(vacancyModels.get(i).isChecked());
-                }
-            }
-        }
-        notifyDataSetChanged();
-    }
-
     class ViewHolder {
         TextView tvTopic, tvWhenCreated, tvPositionDescription, tvSalary;
         CheckBox checkBox;
-        LinearLayout llViewed;
     }
 
     private String transformingDate(String date) {

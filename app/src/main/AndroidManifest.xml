@@ -9,22 +9,21 @@
     <application
         android:name=".StartApp"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_vacancy"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher"
+        android:roundIcon="@drawable/ic_vacancy"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".page_splash_screen.SplashActivity">
+        <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".page_main.MainPageActivity" />
-        <activity android:name=".page_details.DetailsPageActivity" android:label="@string/details_page_label"/>
-        <activity android:name=".page_about_us.AboutUsActivity" android:label="@string/about_us"/>
-        <activity android:name=".page_favorite.FavoriteActivity" android:label="@string/text_favorite_on_toolbar"/>
-        <activity android:name=".page_search.SearchingPageActivity" android:label="@string/searching"/>
+        <activity android:name=".main.MainPageActivity" />
+        <activity android:name=".details.DetailsPageActivity" android:label="@string/details_page_label"/>
+        <activity android:name=".favorites.FavoriteActivity" android:label="@string/text_favorite_on_toolbar"/>
+        <activity android:name=".search.SearchingPageActivity" android:label="@string/searching"/>
     </application>
 </manifest>

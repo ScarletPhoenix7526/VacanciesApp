@@ -1,4 +1,4 @@
-package ru.coder.laboratory2_vacancies.page_main.pager;
+package ru.coder.laboratory2_vacancies.main.pager;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -27,5 +27,4 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
     public CharSequence getPageTitle(int position) {
         return mTabs.get(position).getTitle();
     }
-
 }

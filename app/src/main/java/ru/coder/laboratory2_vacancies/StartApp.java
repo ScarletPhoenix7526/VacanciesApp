@@ -2,31 +2,27 @@ package ru.coder.laboratory2_vacancies;
 
 import android.app.Application;
 import android.content.Context;
-import android.support.annotation.NonNull;
 
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.coder.laboratory2_vacancies.data.database.SQLiteDB;
 import ru.coder.laboratory2_vacancies.data.network.GetVacanciesService;
 
 public class StartApp extends Application {
-    private GetVacanciesService service;
+    private GetVacanciesService mService;
     private final static String BASE_URL = BuildConfig.BASE_URL;
-    private SQLiteDB sqLiteDB;
+    private SQLiteDB mSqLiteDB;
 
 
     @Override
     public void onCreate() {
         super.onCreate();
-        service = initService();
-        sqLiteDB = new SQLiteDB(getApplicationContext());
+        mService = initService();
+        mSqLiteDB = new SQLiteDB(getApplicationContext());
     }
 
     public static GetVacanciesService initService() {
@@ -43,15 +39,12 @@ public class StartApp extends Application {
                 .readTimeout(30, TimeUnit.SECONDS)
                 .connectTimeout(30, TimeUnit.SECONDS)
                 .writeTimeout(30, TimeUnit.SECONDS)
-                .addInterceptor(new Interceptor() {
-                    @Override
-                    public Response intercept(@NonNull Chain chain) throws IOException {
-                        Request.Builder builder = chain.request()
-                                .newBuilder()
-                                .addHeader("Accept", "application/json;version=1");
+                .addInterceptor(chain -> {
+                    Request.Builder builder = chain.request()
+                            .newBuilder()
+                            .addHeader("Accept", "application/json;version=1");
 
-                        return chain.proceed(builder.build());
-                    }
+                    return chain.proceed(builder.build());
                 })
                 .build();
     }
@@ -61,10 +54,10 @@ public class StartApp extends Application {
     }
 
     public GetVacanciesService getService() {
-        return service;
+        return mService;
     }
 
     public SQLiteDB loadSQLiteDB() {
-        return sqLiteDB;
+        return mSqLiteDB;
     }
 }
